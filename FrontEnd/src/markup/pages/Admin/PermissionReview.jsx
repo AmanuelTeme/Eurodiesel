@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from "react";
 import permissionService from "../../../services/permission.service";
 import { FaCheckCircle, FaTimesCircle, FaRegStickyNote } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
-const statusBadge = (status) => {
+const statusBadge = (status, t) => {
   if (status === "accepted")
     return (
       <span className="badge bg-success">
-        <FaCheckCircle /> Accepted
+        <FaCheckCircle /> {t("Accepted")}
       </span>
     );
   if (status === "rejected")
     return (
       <span className="badge bg-danger">
-        <FaTimesCircle /> Rejected
+        <FaTimesCircle /> {t("Rejected")}
       </span>
     );
-  return <span className="badge bg-warning text-dark">Pending</span>;
+  return <span className="badge bg-warning text-dark">{t("Pending")}</span>;
 };
 
 // Helper to format date as YYYY-MM-DD
@@ -34,6 +35,7 @@ const PermissionReview = () => {
   const [requests, setRequests] = useState([]);
   const [message, setMessage] = useState("");
   const [response, setResponse] = useState({});
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchRequests();
@@ -73,7 +75,7 @@ const PermissionReview = () => {
           <div className="card shadow mb-4">
             <div className="card-header bg-primary text-white d-flex align-items-center">
               <FaRegStickyNote className="me-2" />
-              <h4 className="mb-0">Review Permission Requests</h4>
+              <h4 className="mb-0">{t("Review Time Off Requests")}</h4>
             </div>
             <div className="card-body">
               {message && <div className="alert alert-info">{message}</div>}
@@ -81,22 +83,22 @@ const PermissionReview = () => {
                 <table className="table table-bordered table-striped align-middle">
                   <thead className="table-light">
                     <tr>
-                      <th>Employee</th>
-                      <th>Start Date</th>
-                      <th>End Date</th>
-                      <th>Start Time</th>
-                      <th>End Time</th>
-                      <th>Reason</th>
-                      <th>Status</th>
-                      <th>Response</th>
-                      <th>Action</th>
+                      <th>{t("Employee")}</th>
+                      <th>{t("Start Date")}</th>
+                      <th>{t("End Date")}</th>
+                      <th>{t("Start Time")}</th>
+                      <th>{t("End Time")}</th>
+                      <th>{t("Reason")}</th>
+                      <th>{t("Status")}</th>
+                      <th>{t("Response")}</th>
+                      <th>{t("Action")}</th>
                     </tr>
                   </thead>
                   <tbody>
                     {requests.length === 0 ? (
                       <tr>
                         <td colSpan="9" className="text-center text-muted">
-                          No requests found.
+                          {t("No requests found")}
                         </td>
                       </tr>
                     ) : (
@@ -112,7 +114,7 @@ const PermissionReview = () => {
                           <td>{formatTime(r.start_time)}</td>
                           <td>{formatTime(r.end_time)}</td>
                           <td>{r.reason}</td>
-                          <td>{statusBadge(r.status)}</td>
+                          <td>{statusBadge(r.status, t)}</td>
                           <td>
                             <input
                               type="text"
@@ -121,7 +123,7 @@ const PermissionReview = () => {
                               onChange={(e) =>
                                 handleResponseChange(r.id, e.target.value)
                               }
-                              placeholder="Response message"
+                              placeholder={t("Response message")}
                               disabled={r.status !== "pending"}
                             />
                           </td>
@@ -130,14 +132,14 @@ const PermissionReview = () => {
                               <div className="d-flex gap-2">
                                 <button
                                   className="btn btn-success btn-sm"
-                                  title="Accept"
+                                  title={t("Accept")}
                                   onClick={() => handleAction(r.id, "accepted")}
                                 >
                                   <FaCheckCircle />
                                 </button>
                                 <button
                                   className="btn btn-danger btn-sm"
-                                  title="Reject"
+                                  title={t("Reject")}
                                   onClick={() => handleAction(r.id, "rejected")}
                                 >
                                   <FaTimesCircle />
@@ -153,6 +155,7 @@ const PermissionReview = () => {
                   </tbody>
                 </table>
               </div>
+              <p>{t("review_timeoff_content")}</p>
             </div>
           </div>
         </div>

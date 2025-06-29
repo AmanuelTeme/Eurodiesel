@@ -157,6 +157,7 @@ const Vehicleform = ({ id, v }) => {
                       value={vehicle_mileage}
                       onChange={(e) => setVehicleMileage(e.target.value)}
                       placeholder="Vehicle mileage"
+                      unit="km"
                     />
                     <FormInput
                       type="text"

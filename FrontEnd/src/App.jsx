@@ -56,7 +56,10 @@ import "./assets/template/css/flaticon.css";
 // Import custom css
 import "./assets/styles/custom.css";
 
+import usePreventBackToLogin from "./hooks/usePreventBackToLogin";
+
 const App = () => {
+  usePreventBackToLogin();
   const location = useLocation();
   const showHeader = !location.pathname.startsWith("/order-status");
 

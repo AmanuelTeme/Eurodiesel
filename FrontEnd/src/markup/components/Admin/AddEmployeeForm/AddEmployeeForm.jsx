@@ -10,11 +10,13 @@ import {
   validatePassword,
   validateRequired,
 } from "../../../../components/common/validation";
+import { useTranslation } from "react-i18next";
 
 function AddEmployeeForm() {
   const { employee: loggedInEmployee } = useAuth();
   const loggedInEmployeeToken = loggedInEmployee?.employee_token;
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [employee_email, setEmail] = useState("");
   const [employee_first_name, setFirstName] = useState("");
@@ -72,10 +74,10 @@ function AddEmployeeForm() {
 
       if (data.status === 200) {
         setServerError("");
-        setServerSuccess(data.data);
+        setServerSuccess("Employee added successfully!");
         setTimeout(() => {
           navigate("/admin/employees");
-        }, 2000);
+        }, 1000);
       } else {
         setServerError(data.data.msg || "Failed to add the employee!");
       }
@@ -94,7 +96,7 @@ function AddEmployeeForm() {
     <section className="contact-section">
       <div className="auto-container">
         <div className="contact-title">
-          <h2>Add a new employee</h2>
+          <h2>{t("Add a new employee")}</h2>
         </div>
         <div className="row clearfix">
           <div className="form-column col-lg-7">
@@ -108,7 +110,7 @@ function AddEmployeeForm() {
                       name="employee_email"
                       value={employee_email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Employee email"
+                      placeholder={t("Employee email")}
                       error={emailError}
                     />
                     <FormInput
@@ -116,7 +118,7 @@ function AddEmployeeForm() {
                       name="employee_first_name"
                       value={employee_first_name}
                       onChange={(e) => setFirstName(e.target.value)}
-                      placeholder="Employee first name"
+                      placeholder={t("Employee first name")}
                       error={firstNameError}
                     />
                     <FormInput
@@ -124,14 +126,14 @@ function AddEmployeeForm() {
                       name="employee_last_name"
                       value={employee_last_name}
                       onChange={(e) => setLastName(e.target.value)}
-                      placeholder="Employee last name"
+                      placeholder={t("Employee last name")}
                     />
                     <FormInput
                       type="text"
                       name="employee_phone"
                       value={employee_phone}
                       onChange={(e) => setPhoneNumber(e.target.value)}
-                      placeholder="Employee phone (555-555-5555)"
+                      placeholder={t("Employee phone")}
                     />
                     <div className="form-group col-md-12">
                       <select
@@ -152,17 +154,17 @@ function AddEmployeeForm() {
                       name="employee_password"
                       value={employee_password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Employee password"
+                      placeholder={t("Employee password")}
                       error={passwordError}
                     />
                     <div className="form-group col-md-12">
                       <SubmitButton loading={loading}>
-                        Add employee
+                        {t("Add employee")}
                       </SubmitButton>
                     </div>
                     {serverSuccess && (
                       <div className="success-message" role="alert">
-                        {serverSuccess}
+                        {t("Employee added successfully!")}
                       </div>
                     )}
                   </div>

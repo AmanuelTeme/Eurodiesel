@@ -6,14 +6,17 @@ import customerService from "../../../../services/customer.service"; // Import c
 import vehicleService from "../../../../services/vehicle.service"; // Import vehicleService
 import { BsHandIndexThumbFill } from "react-icons/bs";
 import { FaEdit } from "react-icons/fa";
+import AddIcon from "@mui/icons-material/Add";
+import { useTranslation } from "react-i18next";
 
 const SingleOrder = () => {
+  const { t } = useTranslation();
   const { employee } = useAuth();
   const token = employee?.employee_token;
-//   console.log("Employee:", employee);
-//   console.log("Token:", token);
+  //   console.log("Employee:", employee);
+  //   console.log("Token:", token);
   const { customer_id } = useParams();
- 
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -50,7 +53,7 @@ const SingleOrder = () => {
         customer_id,
         token
       );
-    //   console.log(data);
+      //   console.log(data);
       setVehiclePerCustomer(data.result);
       // Ensure this matches your data structure
     } catch (error) {
@@ -77,20 +80,17 @@ const SingleOrder = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
-
   const handleRedirectCustomer = () => {
     navigate("/admin/create-order");
   };
 
   return (
     <div className=" ">
-      
-
-        <div className="contact-section pad_1">
-          <div className="contact-title mb-1">
-            <h2>Create a new order</h2>
-          </div>
+      <div className="contact-section pad_1">
+        <div className="contact-title mb-1">
+          <h2>{t("Create a new order")}</h2>
         </div>
+      </div>
 
       {customerInfo ? (
         <div className="CustomerInfo px-3 ">
@@ -101,35 +101,45 @@ const SingleOrder = () => {
                 <span>{customerInfo.customer_last_name}</span>
               </h2>
             </div>
-           
+
             <div>
-              <CancelPresentationIcon 
-              onClick={handleRedirectCustomer}
-              className="icon" />
+              <CancelPresentationIcon
+                onClick={handleRedirectCustomer}
+                className="icon"
+              />
             </div>
           </div>
 
           <p>
-            <span className="label customer_label_info">Email: </span>{""}
-            <span className="value customer_label_value">{customerInfo.customer_email}</span>
-          </p>
-          <p>
-            <span className="label customer_label_info">Phone Number: </span>{" "}
-            <span className="value customer_label_value">{customerInfo.customer_phone_number}</span>
-          </p>
-          <p>
-            <span className="label customer_label_info">Active Customer: </span>{" "}
+            <span className="label customer_label_info">{t("Email")}: </span>
+            {""}
             <span className="value customer_label_value">
-              {customerInfo.active_customer_status ? "Yes" : "No"}
+              {customerInfo.customer_email}
             </span>
           </p>
           <p>
-            <span className="label customer_label_info">Edit customer info: </span>{" "}
-                <Link to={`/admin/edit-customer/${customerInfo.customer_id}`}>
-                      <FaEdit 
-                      className="icon"
-                      size={20} />
-                </Link>
+            <span className="label customer_label_info">
+              {t("Phone Number")}:{" "}
+            </span>{" "}
+            <span className="value customer_label_value">
+              {customerInfo.customer_phone_number}
+            </span>
+          </p>
+          <p>
+            <span className="label customer_label_info">
+              {t("Active Customer")}:{" "}
+            </span>{" "}
+            <span className="value customer_label_value">
+              {customerInfo.active_customer_status ? t("Yes") : t("No")}
+            </span>
+          </p>
+          <p>
+            <span className="label customer_label_info">
+              {t("Edit customer info")}:{" "}
+            </span>{" "}
+            <Link to={`/admin/edit-customer/${customerInfo.customer_id}`}>
+              <FaEdit className="icon" size={20} />
+            </Link>
           </p>
         </div>
       ) : (
@@ -137,21 +147,20 @@ const SingleOrder = () => {
       )}
 
       <div className=" vehicle_info">
+        <h2 className="customer_name v_font">{t("Choose a vehicle")}</h2>
 
-         <h2 className="customer_name v_font">Choose a vehicle</h2>
-        
         <div className="table-responsive rounded-3 ">
           <table className="table table-striped   table-hover border ">
             <thead className="">
               <tr>
-                <th>Year</th>
-                <th>Make</th>
-                <th>Model</th>
-                <th>Tag</th>
-                <th>Serial</th>
-                <th>Color</th>
-                <th>Mileage</th>
-                <th>Choose</th>
+                <th>{t("Year")}</th>
+                <th>{t("Make")}</th>
+                <th>{t("Model")}</th>
+                <th>{t("Tag")}</th>
+                <th>{t("Serial")}</th>
+                <th>{t("Color")}</th>
+                <th>{t("Mileage (km)")}</th>
+                <th>{t("Choose")}</th>
               </tr>
             </thead>
             <tbody>
@@ -167,9 +176,9 @@ const SingleOrder = () => {
                   <td>
                     <Link
                       to={`/admin/order/${customer_id}/${vehicle.vehicle_id}`}
-                      className="chooseButton"
+                      className="chooseButton custom-add-btn"
                     >
-                      <BsHandIndexThumbFill />
+                      {t("Add")}
                     </Link>
                   </td>
                 </tr>

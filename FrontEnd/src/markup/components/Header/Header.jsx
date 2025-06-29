@@ -225,10 +225,10 @@ function Header(props) {
                       verticalAlign: "middle",
                     }}
                   />
-                  24hr Workshop Open for Emergency Service
+                  {t("24hr Workshop Open for Emergency Service")}
                 </div>
                 <div className="office-hour">
-                  Monday - Friday 8:00 - 18:30 | Saturday 8:00 - 12:00
+                  {t("Monday - Friday 8:00 - 18:30 | Saturday 8:00 - 12:00")}
                 </div>
               </div>
               <div className="right-column d-flex">
@@ -269,8 +269,10 @@ function Header(props) {
                     <span className="welcome-admin-text">
                       <strong>
                         {isAdmin
-                          ? "Welcome Admin!"
-                          : `Welcome ${employee?.employee_first_name || ""}!`}
+                          ? t("Welcome Admin!")
+                          : t("Welcome {{name}}!", {
+                              name: employee?.employee_first_name || "",
+                            })}
                       </strong>
                     </span>
                     {/* Notification bell for employees only */}
@@ -311,7 +313,7 @@ function Header(props) {
                   </div>
                 ) : (
                   <div className="phone-number">
-                    Schedule Appointment:{" "}
+                    {t("Schedule Appointment:")}{" "}
                     <a
                       href="tel:+390461996222"
                       style={{
@@ -329,7 +331,11 @@ function Header(props) {
                 {isLogged && (
                   <div className="employee_profile">
                     <Avatar
-                      name={`${employee?.employee_first_name} ${employee?.employee_last_name}`}
+                      name={
+                        employee?.employee_first_name
+                          ? employee.employee_first_name[0].toUpperCase()
+                          : ""
+                      }
                       size="50"
                       textSizeRatio={2}
                       color="#EE100E"
@@ -376,19 +382,19 @@ function Header(props) {
                           }
                         >
                           <Dropdown.Item as={Link} to="/">
-                            Home
+                            {t("Home")}
                           </Dropdown.Item>
                           <Dropdown.Item as={Link} to="/about">
-                            About Us
+                            {t("About Us")}
                           </Dropdown.Item>
                           <Dropdown.Item as={Link} to="/services">
-                            Services
+                            {t("Services")}
                           </Dropdown.Item>
                           <Dropdown.Item as={Link} to="/contact">
-                            Contact
+                            {t("Contact Us")}
                           </Dropdown.Item>
                           <Dropdown.Item as={Link} to="/admin">
-                            Dashboard
+                            {t("Dashboard")}
                           </Dropdown.Item>
                         </DropdownButton>
                       </div>
@@ -413,20 +419,10 @@ function Header(props) {
                                 borderRadius: "4px",
                                 transition: "all 0.3s ease",
                                 display: "block",
-                              }}
-                              onMouseEnter={(e) => {
-                                e.target.style.color = "#1a237e";
-                                e.target.style.backgroundColor =
-                                  "rgba(26, 35, 126, 0.1)";
-                                e.target.style.transform = "translateY(-2px)";
-                              }}
-                              onMouseLeave={(e) => {
-                                e.target.style.color = "";
-                                e.target.style.backgroundColor = "";
-                                e.target.style.transform = "translateY(0)";
+                                position: "relative",
                               }}
                             >
-                              Home
+                              {t("Home")}
                             </NavLink>
                           </li>
                           <li className="dropdown">
@@ -441,20 +437,10 @@ function Header(props) {
                                 borderRadius: "4px",
                                 transition: "all 0.3s ease",
                                 display: "block",
-                              }}
-                              onMouseEnter={(e) => {
-                                e.target.style.color = "#1a237e";
-                                e.target.style.backgroundColor =
-                                  "rgba(26, 35, 126, 0.1)";
-                                e.target.style.transform = "translateY(-2px)";
-                              }}
-                              onMouseLeave={(e) => {
-                                e.target.style.color = "";
-                                e.target.style.backgroundColor = "";
-                                e.target.style.transform = "translateY(0)";
+                                position: "relative",
                               }}
                             >
-                              About Us
+                              {t("About Us")}
                             </NavLink>
                           </li>
                           <li className="dropdown">
@@ -469,20 +455,10 @@ function Header(props) {
                                 borderRadius: "4px",
                                 transition: "all 0.3s ease",
                                 display: "block",
-                              }}
-                              onMouseEnter={(e) => {
-                                e.target.style.color = "#1a237e";
-                                e.target.style.backgroundColor =
-                                  "rgba(26, 35, 126, 0.1)";
-                                e.target.style.transform = "translateY(-2px)";
-                              }}
-                              onMouseLeave={(e) => {
-                                e.target.style.color = "";
-                                e.target.style.backgroundColor = "";
-                                e.target.style.transform = "translateY(0)";
+                                position: "relative",
                               }}
                             >
-                              Services
+                              {t("Services")}
                             </NavLink>
                           </li>
                           <li>
@@ -497,20 +473,10 @@ function Header(props) {
                                 borderRadius: "4px",
                                 transition: "all 0.3s ease",
                                 display: "block",
-                              }}
-                              onMouseEnter={(e) => {
-                                e.target.style.color = "#1a237e";
-                                e.target.style.backgroundColor =
-                                  "rgba(26, 35, 126, 0.1)";
-                                e.target.style.transform = "translateY(-2px)";
-                              }}
-                              onMouseLeave={(e) => {
-                                e.target.style.color = "";
-                                e.target.style.backgroundColor = "";
-                                e.target.style.transform = "translateY(0)";
+                                position: "relative",
                               }}
                             >
-                              Contact
+                              {t("Contact Us")}
                             </NavLink>
                           </li>
                           <li>
@@ -525,20 +491,10 @@ function Header(props) {
                                 borderRadius: "4px",
                                 transition: "all 0.3s ease",
                                 display: "block",
-                              }}
-                              onMouseEnter={(e) => {
-                                e.target.style.color = "#1a237e";
-                                e.target.style.backgroundColor =
-                                  "rgba(26, 35, 126, 0.1)";
-                                e.target.style.transform = "translateY(-2px)";
-                              }}
-                              onMouseLeave={(e) => {
-                                e.target.style.color = "";
-                                e.target.style.backgroundColor = "";
-                                e.target.style.transform = "translateY(0)";
+                                position: "relative",
                               }}
                             >
-                              Dashboard
+                              {t("Dashboard")}
                             </NavLink>
                           </li>
                         </ul>

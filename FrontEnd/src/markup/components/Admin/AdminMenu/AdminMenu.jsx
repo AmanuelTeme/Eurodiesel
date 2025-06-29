@@ -52,12 +52,6 @@ const AdminMenu = () => {
         {/* Only for managers and admins */}
         {(role === 2 || role === 3) && (
           <>
-            <Link to="/admin" className="list-group-item py-3">
-              <DashboardIcon
-                style={{ marginRight: 12, verticalAlign: "middle" }}
-              />{" "}
-              {t("Dashboard")}
-            </Link>
             <Link to="/admin/create-order" className="list-group-item py-3">
               <NewOrderIcon
                 style={{ marginRight: 12, verticalAlign: "middle" }}
@@ -104,7 +98,7 @@ const AdminMenu = () => {
               <span style={{ marginRight: 12, verticalAlign: "middle" }}>
                 📝
               </span>
-              Review Time Off Requests
+              {t("Review Time Off Requests")}
             </Link>
           </>
         )}

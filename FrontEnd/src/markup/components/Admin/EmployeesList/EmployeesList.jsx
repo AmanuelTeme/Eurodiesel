@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 import { Table, Pagination, Modal, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./EmployeesList.css";
@@ -26,21 +26,24 @@ const EmployeesList = () => {
         employee.employee_token
       );
       if (res.status === 200) {
-        setEmployees(res.data.employees);
+        const employeesArray = Array.isArray(res.data.employees)
+          ? res.data.employees
+          : [];
+        setEmployees(employeesArray);
       } else {
         setApiError(true);
         if (res.status === 401) {
-          setApiErrorMessage(t('Please login again'));
+          setApiErrorMessage(t("Please login again"));
         } else if (res.status === 403) {
-          setApiErrorMessage(t('You are not authorized to view this page'));
+          setApiErrorMessage(t("You are not authorized to view this page"));
         } else {
-          setApiErrorMessage(t('Please try again later'));
+          setApiErrorMessage(t("Please try again later"));
         }
       }
     } catch (err) {
       console.error(err);
       setApiError(true);
-      setApiErrorMessage(t('An error occurred while fetching the employees'));
+      setApiErrorMessage(t("An error occurred while fetching the employees"));
     }
   };
 
@@ -59,12 +62,12 @@ const EmployeesList = () => {
         setShowDeleteModal(false);
       } else {
         setApiError(true);
-        setApiErrorMessage(t('An error occurred while deleting the employee'));
+        setApiErrorMessage(t("An error occurred while deleting the employee"));
       }
     } catch (err) {
       console.error(err);
       setApiError(true);
-      setApiErrorMessage(t('An error occurred while deleting the employee'));
+      setApiErrorMessage(t("An error occurred while deleting the employee"));
     }
   };
 
@@ -123,93 +126,98 @@ const EmployeesList = () => {
             <div className="row">
               <div className="col-12">
                 <div className="contact-title">
-                  <h2>{t('Employees')}</h2>
+                  <h2>{t("Employees")}</h2>
                 </div>
                 <div className="d-flex justify-content-between mb-3">
                   <button onClick={handleToggle} className="btn btn-danger">
-                    {showActiveEmployees ? t('Show Inactive') : t('Show Active')}
+                    {showActiveEmployees
+                      ? t("Show Inactive")
+                      : t("Show Active")}
                   </button>
                   <input
                     type="search"
                     className="form-control w-50 w-md-25"
-                    placeholder={t('Search')}
+                    placeholder={t("Search")}
                     value={searchTerm}
                     onChange={handleSearch}
                   />
                 </div>
                 <div className="table-responsive">
                   <Table
-                  responsive
-                  striped
-                  bordered
-                  hover
-                  className="modern-table border"
-                >
-                  <thead>
-                    <tr>
-                      <th>{t('Active')}</th>
-                      <th>{t('First Name')}</th>
-                      <th>{t('Last Name')}</th>
-                      <th>{t('Email')}</th>
-                      <th>{t('Phone')}</th>
-                      <th>{t('Added Date')}</th>
-                      <th>{t('Role')}</th>
-                      <th>{t('Edit/Delete/View')}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {currentEmployees.map((employee) => (
-                      <tr key={employee.employee_id}>
-                        <td
-                          className={`border ${
-                            employee.active_employee
-                              ? "text-success"
-                              : "text-danger"
-                          }`}
-                        >
-                          <h6 className="py-0 my-0 mx-3 font-weight-bold">
-                            {employee.active_employee ? t('Yes') : t('No')}
-                          </h6>
-                        </td>
-                        <td>{employee.employee_first_name}</td>
-                        <td>{employee.employee_last_name}</td>
-                        <td>{employee.employee_email}</td>
-                        <td>{employee.employee_phone}</td>
-                        <td>
-                          {format(
-                            new Date(employee.added_date),
-                            "MM-dd-yyyy | HH:mm"
-                          )}
-                        </td>
-                        <td>{employee.company_role_name}</td>
-                        <td>
-                          <div className="action-icons">
-                            <Link
-                              to={`/admin/employee/edit/${employee.employee_id}`}
-                              state={{ employee }}
-                            >
-                              <i className="fas fa-edit" title={t('Edit')}></i>
-                            </Link>
-                            <Link
-                              to={`/admin/employee-profile/${employee.employee_id}`}
-                              state={{ employee }}
-                            >
-                              <i className="fas fa-eye" title={t('View')}></i>
-                            </Link>
-                            <Link
-                              onClick={() => handleShowDeleteModal(employee)}
-                            >
-                              <i
-                                className="fas fa-trash"
-                                title={t('Delete')}
-                              ></i>
-                            </Link>
-                          </div>
-                        </td>
+                    responsive
+                    striped
+                    bordered
+                    hover
+                    className="modern-table border"
+                  >
+                    <thead>
+                      <tr>
+                        <th>{t("Active")}</th>
+                        <th>{t("First Name")}</th>
+                        <th>{t("Last Name")}</th>
+                        <th>{t("Email")}</th>
+                        <th>{t("Phone")}</th>
+                        <th>{t("Added Date")}</th>
+                        <th>{t("Role")}</th>
+                        <th>{t("Edit/Delete/View")}</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </Table>
+                    </thead>
+                    <tbody>
+                      {currentEmployees.map((employee) => (
+                        <tr key={employee.employee_id}>
+                          <td
+                            className={`border ${
+                              employee.active_employee
+                                ? "text-success"
+                                : "text-danger"
+                            }`}
+                          >
+                            <h6 className="py-0 my-0 mx-3 font-weight-bold">
+                              {employee.active_employee ? t("Yes") : t("No")}
+                            </h6>
+                          </td>
+                          <td>{employee.employee_first_name}</td>
+                          <td>{employee.employee_last_name}</td>
+                          <td>{employee.employee_email}</td>
+                          <td>{employee.employee_phone}</td>
+                          <td>
+                            {format(
+                              new Date(employee.added_date),
+                              "MM-dd-yyyy | HH:mm"
+                            )}
+                          </td>
+                          <td>{employee.company_role_name}</td>
+                          <td>
+                            <div className="action-icons">
+                              <Link
+                                to={`/admin/employee/edit/${employee.employee_id}`}
+                                state={{ employee }}
+                              >
+                                <i
+                                  className="fas fa-edit"
+                                  title={t("Edit")}
+                                ></i>
+                              </Link>
+                              <Link
+                                to={`/admin/employee-profile/${employee.employee_id}`}
+                                state={{ employee }}
+                              >
+                                <i className="fas fa-eye" title={t("View")}></i>
+                              </Link>
+                              <Link
+                                onClick={() => handleShowDeleteModal(employee)}
+                              >
+                                <i
+                                  className="fas fa-trash"
+                                  title={t("Delete")}
+                                ></i>
+                              </Link>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
                 </div>
                 <div className="d-flex justify-content-center">
                   <Pagination>
@@ -222,7 +230,11 @@ const EmployeesList = () => {
                       disabled={currentPage === 1}
                     />
                     {Array.from(
-                      { length: Math.ceil(filteredEmployees.length / employeesPerPage) },
+                      {
+                        length: Math.ceil(
+                          filteredEmployees.length / employeesPerPage
+                        ),
+                      },
                       (_, i) => i + 1
                     ).map((number) => (
                       <Pagination.Item
@@ -242,7 +254,9 @@ const EmployeesList = () => {
                     />
                     <Pagination.Last
                       onClick={() =>
-                        paginate(Math.ceil(filteredEmployees.length / employeesPerPage))
+                        paginate(
+                          Math.ceil(filteredEmployees.length / employeesPerPage)
+                        )
                       }
                       disabled={
                         currentPage ===
@@ -259,17 +273,19 @@ const EmployeesList = () => {
 
       <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
         <Modal.Header closeButton>
-          <Modal.Title>{t('Confirm Delete')}</Modal.Title>
+          <Modal.Title>{t("Confirm Delete")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {t('Are you sure you want to delete')} {employeeToDelete?.employee_first_name} {employeeToDelete?.employee_last_name}?
+          {t("Are you sure you want to delete")}{" "}
+          {employeeToDelete?.employee_first_name}{" "}
+          {employeeToDelete?.employee_last_name}?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseDeleteModal}>
-            {t('Cancel')}
+            {t("Cancel")}
           </Button>
           <Button variant="danger" onClick={handleDelete}>
-            {t('Delete')}
+            {t("Delete")}
           </Button>
         </Modal.Footer>
       </Modal>

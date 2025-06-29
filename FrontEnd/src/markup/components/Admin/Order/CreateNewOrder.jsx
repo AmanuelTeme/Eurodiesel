@@ -12,6 +12,7 @@ import { FaEdit } from "react-icons/fa";
 import spaceService from "../../../../services/space.service";
 import axios from "../../../../utils/axiosConfig";
 import employeeService from "../../../../services/employee.service";
+import { useTranslation } from "react-i18next";
 
 const api_url = import.meta.env.VITE_API_URL;
 function CreateNewOrder() {
@@ -43,6 +44,7 @@ function CreateNewOrder() {
   const [spaceError, setSpaceError] = useState("");
   const [employees, setEmployees] = useState([]);
   const [assignedEmployee, setAssignedEmployee] = useState("");
+  const { t } = useTranslation();
 
   const getServiceList = async () => {
     try {
@@ -268,7 +270,7 @@ function CreateNewOrder() {
       {notification && (
         <div onClick={handleClickOut} className="notification_main">
           <div className="notification">
-            {notification} <br />
+            {t("Order successfully submitted")} <br />
             <button onClick={handleNotificationButtonClick}>Ok</button>
           </div>
         </div>
@@ -276,7 +278,7 @@ function CreateNewOrder() {
 
       <div className="contact-section pad_1">
         <div className="contact-title mb-1">
-          <h2>Create a new order</h2>
+          <h2>{t("Create a new order")}</h2>
         </div>
       </div>
       {errorMessage && (
@@ -380,17 +382,14 @@ function CreateNewOrder() {
             <span className="label  customer_label_info">
               Edit Vehicle info:
             </span>{" "}
-            <span className="value">
-              {/* <FaEdit 
+            {/* <FaEdit 
                 className="icon"
                 onClick={handleEditCustomerClick}
                 size={20}
               /> */}
-
-              <Link to={`/admin/edit-vehicle/${vehicleInfo.vehicle_id}`}>
-                <FaEdit className="icon" size={20} />
-              </Link>
-            </span>
+            <Link to={`/admin/edit-vehicle/${vehicleInfo.vehicle_id}`}>
+              <FaEdit className="icon" size={20} />
+            </Link>
           </p>
         </div>
       ) : (
@@ -399,7 +398,7 @@ function CreateNewOrder() {
 
       <div className="service_list_container">
         <div className="services-list">
-          <h2 className="customer_name v_font">Choose service</h2>
+          <h2 className="customer_name v_font">{t("Choose service")}</h2>
 
           {services?.length > 0 ? (
             services.map((service) => (
@@ -432,7 +431,7 @@ function CreateNewOrder() {
         {/* <h2>Additional requests</h2> */}
         <div className="contact-section pad_1" style={{ background: "#fff" }}>
           <div className="contact-title mb-1">
-            <h2 style={{ fontSize: "32px" }}>Additional requests</h2>
+            <h2 style={{ fontSize: "32px" }}>{t("Additional requests")}</h2>
           </div>
         </div>
 
@@ -441,7 +440,7 @@ function CreateNewOrder() {
             className="w-100"
             type="text"
             style={{ paddingLeft: "15px" }}
-            placeholder="Service Description"
+            placeholder={t("Service Description")}
             value={serviceDescription}
             onChange={handleAdditionalRequest}
           />
@@ -452,7 +451,7 @@ function CreateNewOrder() {
             className="w-100"
             type="text"
             style={{ padding: "10px 15px" }}
-            placeholder="Price"
+            placeholder={t("Price")}
             value={orderTotalPrice}
             onChange={handleOrderTotalPriceChange}
           />
@@ -464,7 +463,7 @@ function CreateNewOrder() {
               className="w-100"
               type="text"
               style={{ padding: "10px 15px" }}
-              placeholder="Order Description"
+              placeholder={t("Order Description")}
               value={orderDescription}
               onChange={handleOrderDescriptionChange}
             />
@@ -473,7 +472,7 @@ function CreateNewOrder() {
 
         <div className="py-2 px-3">
           <label>
-            <span className="v_font">Expected Completion Date:</span>
+            <span className="v_font">{t("Expected Completion Date")}:</span>
             <input
               type="datetime-local"
               value={estimatedCompletionDate}
@@ -483,7 +482,7 @@ function CreateNewOrder() {
         </div>
 
         <div>
-          <label>Assign Space</label>
+          <label>{t("Assign Space")}</label>
           <select
             value={selectedSpace}
             onChange={(e) => setSelectedSpace(e.target.value)}
@@ -500,7 +499,7 @@ function CreateNewOrder() {
         </div>
 
         <div>
-          <label>Assign Employee</label>
+          <label>{t("Assign Employee")}</label>
           <select
             value={assignedEmployee}
             onChange={(e) => setAssignedEmployee(e.target.value)}
@@ -521,7 +520,7 @@ function CreateNewOrder() {
             type="submit"
             disabled={!selectedSpace || !!spaceError}
           >
-            SUBMIT ORDER
+            {t("SUBMIT ORDER")}
           </button>
         </div>
       </div>

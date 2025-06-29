@@ -101,12 +101,12 @@ const MaintenanceSpaces = () => {
 
   return (
     <div className="maintenance-spaces-page">
-      <div className="container-fluid">
+      <div className="container-fluid admin-pages">
         <div className="row">
-          <div className="col-md-3">
+          <div className="col-md-3 admin-left-side">
             <AdminMenu />
           </div>
-          <div className="col-md-9">
+          <div className="col-md-9 admin-right-side">
             <div className="maintenance-spaces-content">
               <h2>{t("Maintenance Spaces Management")}</h2>
 
