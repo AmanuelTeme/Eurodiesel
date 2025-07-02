@@ -11,7 +11,6 @@ import { useAuth } from "../../../Context/AuthContext";
 import TimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
-import { useTranslation } from "react-i18next";
 
 const PermissionRequest = () => {
   const { employee } = useAuth();
@@ -26,8 +25,6 @@ const PermissionRequest = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [dateError, setDateError] = useState("");
-  const { t } = useTranslation();
 
   useEffect(() => {
     if (employee?.employee_id) fetchRequests();
@@ -59,30 +56,6 @@ const PermissionRequest = () => {
     e.preventDefault();
     setLoading(true);
     setError("");
-    setDateError("");
-
-    // Date validation
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const start = new Date(form.start_date);
-    const end = new Date(form.end_date);
-
-    if (isNaN(start) || isNaN(end)) {
-      setDateError("Add the exact date.");
-      setLoading(false);
-      return;
-    }
-    if (start < today) {
-      setDateError("Start date must be today or later.");
-      setLoading(false);
-      return;
-    }
-    if (end < start) {
-      setDateError("End date must be the same as or after the start date.");
-      setLoading(false);
-      return;
-    }
-
     try {
       await permissionService.createRequest({
         ...form,
@@ -108,16 +81,16 @@ const PermissionRequest = () => {
     if (status === "accepted")
       return (
         <span className="badge bg-success">
-          <FaCheckCircle /> {t("Accepted")}
+          <FaCheckCircle /> Accepted
         </span>
       );
     if (status === "rejected")
       return (
         <span className="badge bg-danger">
-          <FaTimesCircle /> {t("Rejected")}
+          <FaTimesCircle /> Rejected
         </span>
       );
-    return <span className="badge bg-warning text-dark">{t("Pending")}</span>;
+    return <span className="badge bg-warning text-dark">Pending</span>;
   };
 
   // Helper to format date as yyyy-mm-dd
@@ -132,14 +105,11 @@ const PermissionRequest = () => {
     return timeString.length >= 5 ? timeString.slice(0, 5) : timeString;
   };
 
-  // Generate 30-minute interval time options from 08:00 to 18:30
-  const timeOptions = [];
-  for (let h = 8; h < 18; h++) {
-    timeOptions.push((h < 10 ? `0${h}` : `${h}`) + ":00");
-    timeOptions.push((h < 10 ? `0${h}` : `${h}`) + ":30");
-  }
-  timeOptions.push("18:00");
-  timeOptions.push("18:30");
+  // Generate 24-hour time options
+  const timeOptions = Array.from(
+    { length: 24 },
+    (_, i) => (i < 10 ? `0${i}` : `${i}`) + ":00"
+  );
 
   return (
     <div className="container py-4">
@@ -148,21 +118,16 @@ const PermissionRequest = () => {
           <div className="card shadow mb-4">
             <div className="card-header bg-primary text-white d-flex align-items-center">
               <FaRegStickyNote className="me-2" />
-              <h4 className="mb-0">{t("Request Time Off / Permission")}</h4>
+              <h4 className="mb-0">Request Time Off / Permission</h4>
             </div>
             <div className="card-body">
               {message && <div className="alert alert-success">{message}</div>}
               {error && <div className="alert alert-danger">{error}</div>}
-              {dateError && (
-                <div style={{ color: "red", marginBottom: 8, fontWeight: 500 }}>
-                  {dateError}
-                </div>
-              )}
               <form onSubmit={handleSubmit} className="mb-4">
                 <div className="row g-2 align-items-end">
                   <div className="col-md-3">
                     <label className="form-label">
-                      <FaCalendarAlt className="me-1" /> {t("Start Date")}
+                      <FaCalendarAlt className="me-1" /> Start Date
                     </label>
                     <input
                       type="date"
@@ -171,12 +136,11 @@ const PermissionRequest = () => {
                       onChange={handleChange}
                       className="form-control"
                       required
-                      min={new Date().toISOString().split("T")[0]}
                     />
                   </div>
                   <div className="col-md-3">
                     <label className="form-label">
-                      <FaCalendarAlt className="me-1" /> {t("End Date")}
+                      <FaCalendarAlt className="me-1" /> End Date
                     </label>
                     <input
                       type="date"
@@ -185,15 +149,11 @@ const PermissionRequest = () => {
                       onChange={handleChange}
                       className="form-control"
                       required
-                      min={
-                        form.start_date ||
-                        new Date().toISOString().split("T")[0]
-                      }
                     />
                   </div>
                   <div className="col-md-2">
                     <label className="form-label">
-                      <FaClock className="me-1" /> {t("Start Time")}
+                      <FaClock className="me-1" /> Start Time
                     </label>
                     <select
                       name="start_time"
@@ -212,7 +172,7 @@ const PermissionRequest = () => {
                   </div>
                   <div className="col-md-2">
                     <label className="form-label">
-                      <FaClock className="me-1" /> {t("End Time")}
+                      <FaClock className="me-1" /> End Time
                     </label>
                     <select
                       name="end_time"
@@ -230,14 +190,14 @@ const PermissionRequest = () => {
                     </select>
                   </div>
                   <div className="col-md-10 mt-2">
-                    <label className="form-label">{t("Reason")}</label>
+                    <label className="form-label">Reason</label>
                     <input
                       type="text"
                       name="reason"
                       value={form.reason}
                       onChange={handleChange}
                       className="form-control"
-                      placeholder={t("Reason for time off")}
+                      placeholder="Reason for time off"
                       required
                     />
                   </div>
@@ -247,12 +207,12 @@ const PermissionRequest = () => {
                       className="btn btn-outline-primary w-100 fw-bold py-2"
                       disabled={loading}
                     >
-                      {loading ? t("Submitting...") : t("Submit")}
+                      {loading ? "Submitting..." : "Submit"}
                     </button>
                   </div>
                 </div>
               </form>
-              <h5 className="mb-3">{t("My Requests")}</h5>
+              <h5 className="mb-3">My Requests</h5>
               {loading ? (
                 <div className="text-center py-4">
                   <div className="spinner-border text-primary" role="status">
@@ -264,20 +224,20 @@ const PermissionRequest = () => {
                   <table className="table table-bordered align-middle">
                     <thead className="table-light">
                       <tr>
-                        <th>{t("Start Date")}</th>
-                        <th>{t("End Date")}</th>
-                        <th>{t("Start")}</th>
-                        <th>{t("End")}</th>
-                        <th>{t("Reason")}</th>
-                        <th>{t("Status")}</th>
-                        <th>{t("Response")}</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                        <th>Response</th>
                       </tr>
                     </thead>
                     <tbody>
                       {requests.length === 0 ? (
                         <tr>
                           <td colSpan="7" className="text-center text-muted">
-                            {t("No requests yet.")}
+                            No requests yet.
                           </td>
                         </tr>
                       ) : (
